@@ -1,0 +1,65 @@
+esphome:
+  name: atoms3
+  name_add_mac_suffix: true
+
+esp32:
+  board: esp32-s3-devkitc-1
+  variant: esp32s3
+  framework:
+    type: arduino
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+
+api:
+logger:
+
+ota:
+  - platform: esphome
+    id: ota_esphome
+
+climate:
+  - platform: mitsubishi
+    name: "Heatpump"
+    set_fan_mode: "quiet_4levels"
+    supports_dry: "false"
+    supports_fan_only: "true"
+    horizontal_default: "left"
+    vertical_default: "down"
+
+#G4=IR
+remote_transmitter:
+  pin: GPIO4
+  carrier_duty_percent: 50%
+
+font:
+  - file: "gfonts://Roboto"
+    id: font_default
+    size: 32
+
+time:
+  platform: homeassistant
+  id: ha_time
+
+spi:
+  clk_pin: 17
+  mosi_pin: 21
+
+display:
+  - platform: st7789v
+    id: display_tft
+    model: Custom
+    height: 128
+    width: 128
+    rotation: 180
+    offset_height: 2
+    offset_width: 1
+    backlight_pin: 16
+    cs_pin: 15
+    dc_pin: 33
+    reset_pin: 34
+    eightbitcolor: true
+    update_interval: 30s
+    lambda: |-
+      it.strftime(64, 0, id(font_default), TextAlign::TOP_CENTER, "%l:%M %p", id(ha_time).now());

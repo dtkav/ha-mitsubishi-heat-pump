@@ -39,4 +39,4 @@ build the image and install it
 CONFIG=m5stack-atom-s3.yaml make
 ```
 
-At the end of this build process it will as you to select a device to program with generated firmware.
+At the end of this build process it will ask you to select a device to program with generated firmware.
